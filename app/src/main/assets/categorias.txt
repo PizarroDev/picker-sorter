@@ -1,0 +1,65 @@
+# Formato:
+#   [Nombre de la categoría]
+#   palabra, otra palabra, prefijo*
+#
+# - El ORDEN de las categorías es el orden en que aparecen en la burbuja:
+#   ponlas en el orden de tu recorrido por la tienda.
+# - Mayúsculas y tildes no importan. Los plurales simples (s / es) se detectan solos.
+# - Un * al final busca palabras que empiecen así (ej: yogur* -> yogur, yogurt).
+# - Si un producto calza con varias, gana la palabra que aparece primero en el nombre
+#   ("Galletas de chocolate" -> Galletas y dulces).
+
+[Frutas y verduras]
+manzana, platano, banana, naranja, mandarina, limon, pera, uva, kiwi, palta, frutilla, durazno, sandia, melon, pina, arandano, cereza, ciruela
+tomate, lechuga, papa, cebolla, ajo, zanahoria, pimenton, zapallo, pepino, brocoli, coliflor, espinaca, acelga, choclo, apio, cilantro, perejil, champinon, betarraga, repollo
+
+[Panadería]
+pan, marraqueta, hallulla, baguette, pan molde, pan de molde, queque, torta, croissant, tortilla, pita
+
+[Carnes y pollo]
+carne, vacuno, cerdo, pollo, pechuga, trutro, filete, lomo, posta, molida, chuleta, costilla, pavo, asiento, abastero, punta paleta, plateada, hamburguesa
+
+[Pescados y mariscos]
+pescado, salmon, merluza, reineta, atun fresco, camaron, chorito, mariscos, surimi
+
+[Fiambres y quesos]
+jamon, salame, longaniza, vienesa, salchicha, mortadela, pate, queso, quesillo, mantecoso, gouda, chanco, parmesano, mozzarella
+
+[Lácteos y huevos]
+leche, yogur*, yoghurt*, mantequilla, margarina, crema, manjar, postre, flan, huevo, kefir, leche cultivada
+
+[Congelados]
+congelado, helado, papas fritas, nugget, pizza congelada, verduras congeladas, hielo
+
+[Despensa]
+arroz, fideo, spaghetti, tallarin, pasta, harina, azucar, sal, aceite, vinagre, salsa, ketchup, mayonesa, mostaza, atun, jurel, sardina, conserva, poroto, lenteja, garbanzo, avena, cereal, mermelada, miel, levadura, caldo, sopa, pure, especia, oregano, pimienta, comino, merken
+
+[Café, té y desayuno]
+cafe, nescafe, te, infusion, mate, cola cao, milo, chocolate en polvo, endulzante, stevia, sucralosa
+
+[Galletas y dulces]
+galleta, chocolate, dulce, caramelo, chicle, gomita, alfajor, barra cereal, oblea
+
+[Snacks]
+lays, pringles, kryzpo, marco polo, ramitas, suflé, souffle, mani, almendra, nuez, frutos secos, palomitas, cabritas, nachos, doritos, snack
+
+[Bebidas y jugos]
+bebida, gaseosa, coca cola, sprite, fanta, pepsi, jugo, nectar, agua, agua mineral, isotonica, energetica, gatorade
+
+[Licores]
+cerveza, vino, pisco, ron, whisky, vodka, gin, espumante, champana, licor
+
+[Limpieza]
+detergente, cloro, lavaloza, lavavajilla, suavizante, limpiador, desinfectante, esponja, virutilla, bolsa basura, bolsas de basura, cera, lustramuebles, quitamanchas, insecticida, toalla desinfectante
+
+[Papel]
+papel higienico, confort, toalla de papel, nova, servilleta, panuelo, panuelos
+
+[Cuidado personal]
+shampoo, champu, acondicionador, jabon, gel de ducha, desodorante, pasta dental, cepillo dental, enjuague bucal, afeitar, crema corporal, toalla higienica, protector diario, tampon, algodon, cotonito
+
+[Bebés]
+panal, toallitas humedas, colado, papilla, formula infantil, leche infantil
+
+[Mascotas]
+perro, gato, mascota, alimento perro, alimento gato, arena sanitaria

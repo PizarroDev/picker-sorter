@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mini Picker</string>
+    <string name="a11y_desc">Lee los nombres de productos que muestra tu app de picking y los agrupa por categoría en una burbuja flotante. No modifica ni toca nada en la otra app, y no envía datos a ningún lado.</string>
+</resources>

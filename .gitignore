@@ -1,0 +1,14 @@
+# Gradle / Kotlin
+.gradle/
+.kotlin/
+build/
+
+# Configuración local (rutas de tu PC)
+local.properties
+
+# IDE
+.idea/
+*.iml
+
+# APK compilados (súbelos como Release, no al código)
+*.apk
