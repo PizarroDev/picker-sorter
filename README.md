@@ -4,7 +4,7 @@ Burbuja flotante para Android que lee tu app de picking y agrupa los productos p
 
 En muchas apps de picking los productos de una misma categoría quedan repartidos por la lista: la leche al principio, el yogur al final. Así terminas pasando dos veces por el mismo pasillo. Mini Picker lee la lista que ya tienes en pantalla y te la muestra ordenada, sin tocar la otra app.
 
-- **Liviana:** APK de ~60 KB, sin librerías externas (solo Kotlin y vistas nativas de Android).
+- **Liviana:** APK de ~70 KB, sin librerías externas (solo Kotlin y vistas nativas de Android).
 - **Privada:** funciona sin internet, no pide permiso de red y no envía datos a ningún lado.
 - **Solo lee:** no presiona botones ni cambia nada en tu app de picking.
 - **Bajo consumo:** solo trabaja mientras la app de picking está en primer plano.
@@ -12,7 +12,11 @@ En muchas apps de picking los productos de una misma categoría quedan repartido
 ## Cómo funciona
 
 1. Un **servicio de accesibilidad** lee los textos que muestra tu app de picking mientras recorres el pedido.
-2. Mini Picker aprende dónde están los nombres de producto y clasifica cada uno según **palabras clave** (por ejemplo `leche, yogur, queso` → Lácteos).
+2. Mini Picker aprende dónde están los nombres de producto y **los categoriza solo**:
+   - con tus **palabras clave** (por ejemplo `leche, yogur, queso` → Lácteos);
+   - con un **diccionario incorporado** de cientos de productos y marcas chilenas (Colun, Soprole, Carozzi, Omo, Confort, Babysec…);
+   - por **parecido** ("galletitas" → galleta);
+   - y **aprendiendo de cada pedido**: si ve "Leche Quillayes" y "Mantequilla Quillayes" en Lácteos, la próxima vez pone ahí cualquier producto Quillayes.
 3. Una **burbuja flotante** muestra cuántos productos quedan. Al tocarla se abre la lista agrupada por categoría, con el progreso del pedido.
 
 En la burbuja:
@@ -90,13 +94,16 @@ Pruebas del clasificador:
 app/                      Mini Picker
   src/main/java/cl/picker/sorter/
     PickerService.kt      Servicio de accesibilidad: lee la pantalla y guarda los productos
-    Classifier.kt         Asigna categoría según palabras clave
+    Classifier.kt         Asigna categoría: palabras clave, diccionario, parecido y lo aprendido
+    WordStats.kt          Aprende qué marcas/palabras van en cada categoría
+    Learner.kt            Aprende dónde están los nombres de producto en la pantalla
     CategoryList.kt       Modelo editable de categorías
     Overlay.kt            Burbuja y panel flotante
     MainActivity.kt       Pantalla principal (pasos, categorías, ayuda)
     Store.kt              Configuración guardada
     Ui.kt                 Colores y componentes visuales
-  src/main/assets/categorias.txt   Categorías por defecto
+  src/main/assets/categorias.txt   Categorías por defecto (editables en la app)
+  src/main/assets/diccionario.txt  Diccionario incorporado de productos y marcas
 demo/                     Picker Demo (app de práctica)
 ```
 

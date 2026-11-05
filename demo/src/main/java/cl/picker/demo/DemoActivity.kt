@@ -154,7 +154,7 @@ class DemoActivity : Activity() {
             "En Mini Picker, elige \"Picker Demo\" como tu app de picking.",
             "Vuelve aquí y recorre el pedido hasta el final.",
             "Toca la burbuja azul: verás todo ordenado por categoría.",
-            "Algunos productos no tienen categoría a propósito, para que practiques asignarlas.",
+            "Algunos productos no están en tus palabras clave: fíjate cómo Mini Picker igual los reconoce solo.",
         )
         pasos.forEachIndexed { i, p ->
             val row = LinearLayout(this).apply {

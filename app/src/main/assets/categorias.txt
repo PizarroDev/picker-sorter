@@ -29,7 +29,7 @@ jamon, salame, longaniza, vienesa, salchicha, mortadela, pate, queso, quesillo, 
 leche, yogur*, yoghurt*, mantequilla, margarina, crema, manjar, postre, flan, huevo, kefir, leche cultivada
 
 [Congelados]
-congelado, helado, papas fritas, nugget, pizza congelada, verduras congeladas, hielo
+congelado, helado, papas fritas congeladas, nugget, pizza congelada, verduras congeladas, hielo
 
 [Despensa]
 arroz, fideo, spaghetti, tallarin, pasta, harina, azucar, sal, aceite, vinagre, salsa, ketchup, mayonesa, mostaza, atun, jurel, sardina, conserva, poroto, lenteja, garbanzo, avena, cereal, mermelada, miel, levadura, caldo, sopa, pure, especia, oregano, pimienta, comino, merken
@@ -63,3 +63,6 @@ panal, toallitas humedas, colado, papilla, formula infantil, leche infantil
 
 [Mascotas]
 perro, gato, mascota, alimento perro, alimento gato, arena sanitaria
+
+[Hogar y bazar]
+pila, ampolleta, vela, fosforo, encendedor, carbon, papel aluminio, vaso desechable, plato desechable

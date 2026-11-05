@@ -31,6 +31,7 @@ class MainActivity : Activity() {
     private lateinit var statusAction: TextView
     private lateinit var stepsBox: LinearLayout
     private lateinit var catBox: LinearLayout
+    private lateinit var autoBox: LinearLayout
     private lateinit var testInput: EditText
     private lateinit var testResult: LinearLayout
     private lateinit var uncatCard: LinearLayout
@@ -68,6 +69,7 @@ class MainActivity : Activity() {
         card(body, "Categorías",
             "En la burbuja los productos aparecen en este orden. Ordénalas igual que tu recorrido " +
                 "por la tienda. Toca una para editarla.").apply {
+            autoBox = vbox().also { addView(it, lp(14)) }
             catBox = vbox().also { addView(it, lp(14)) }
             addView(Ui.button(act, "＋  Nueva categoría", false) { editCategory(null) }, lp(12))
             addDivider(this, 20)
@@ -83,8 +85,8 @@ class MainActivity : Activity() {
         }
 
         uncatCard = card(body, "Productos sin categoría",
-            "Aparecieron en tu pedido pero no calzan con ninguna categoría. " +
-                "Asígnalos una vez y la próxima vez se ordenarán solos.").apply {
+            "Mini Picker no pudo reconocer estos productos todavía. Muchos se categorizan solos " +
+                "a medida que aprende de tus pedidos, pero también puedes asignarlos tú.").apply {
             uncatBox = vbox().also { addView(it, lp(10)) }
         }
 
@@ -92,7 +94,7 @@ class MainActivity : Activity() {
             troubleBox = vbox().also { addView(it, lp(4)) }
         }
 
-        column.addView(text("Mini Picker 1.3 · Funciona sin internet y no envía datos a ningún lado", 12f, Ui.MUTED).apply {
+        column.addView(text("Mini Picker 1.4 · Funciona sin internet y no envía datos a ningún lado", 12f, Ui.MUTED).apply {
             gravity = Gravity.CENTER
             setPadding(px(24), px(24), px(24), 0)
         })
@@ -111,6 +113,8 @@ class MainActivity : Activity() {
     }
 
     private fun refresh() {
+        classifier = Store.classifier(this)
+        renderAuto()
         renderStatus()
         renderSteps()
         renderUncategorized()
@@ -236,18 +240,46 @@ class MainActivity : Activity() {
 
     private fun loadCategories() {
         catList = CategoryList(Store.categories(this))
-        classifier = Classifier(catList.serialize())
+        classifier = Store.classifier(this)
     }
 
     private fun persist() {
-        val text = catList.serialize()
-        Store.saveCategories(this, text)
-        classifier = Classifier(text)
+        Store.saveCategories(this, catList.serialize())
+        classifier = Store.classifier(this)
         PickerService.instance?.reload()
         renderCategories()
         renderUncategorized()
         updateTest()
     }
+
+    private fun renderAuto() {
+        autoBox.removeAllViews()
+        val learned = PickerService.instance?.learnedCount() ?: Store.learned(this).size
+        autoBox.addView(notice(true, "Categorización automática",
+            "Además de tus palabras, Mini Picker trae un diccionario con cientos de productos y marcas, " +
+                "reconoce palabras parecidas (\"galletitas\" → galleta) y aprende solo de cada pedido " +
+                "qué marcas van en cada categoría." +
+                if (learned > 0) " Ya aprendió $learned palabras." else ""), lp(0))
+        if (learned > 0) {
+            autoBox.addView(link("Olvidar lo aprendido") {
+                AlertDialog.Builder(this, dialogTheme)
+                    .setTitle("¿Olvidar lo aprendido?")
+                    .setMessage("Mini Picker volverá a aprender desde cero con tus próximos pedidos.")
+                    .setPositiveButton("Olvidar") { _, _ ->
+                        PickerService.instance?.forgetLearned() ?: Store.saveLearned(this, WordStats())
+                        classifier = Store.classifier(this)
+                        renderAuto()
+                        renderUncategorized()
+                        updateTest()
+                    }
+                    .setNegativeButton("Cancelar", null)
+                    .show()
+            }, lp(6))
+        }
+    }
+
+    private fun categoryName(i: Int) =
+        if (i >= 0 && i < classifier.categories.size) classifier.categories[i].name else "Sin categoría"
 
     private fun renderCategories() {
         catBox.removeAllViews()
@@ -371,13 +403,18 @@ class MainActivity : Activity() {
         testResult.removeAllViews()
         val p = testInput.text.toString().trim()
         if (p.isEmpty()) return
-        val i = classifier.classify(p)
-        if (i >= 0 && i < catList.cats.size) {
-            testResult.addView(notice(true, "Va a: ${catList.cats[i].name}",
-                "Aparecerá en esa sección de la burbuja."), lp(10))
+        val (i, source) = classifier.classifyWithSource(p)
+        if (i >= 0) {
+            val how = when (source) {
+                Classifier.SIMILAR -> "Reconocido por una palabra parecida."
+                Classifier.LEARNED -> "Reconocido por lo que aprendió de tus pedidos."
+                else -> "Reconocido por palabra clave o por el diccionario."
+            }
+            testResult.addView(notice(true, "Va a: ${categoryName(i)}", how), lp(10))
         } else {
             testResult.addView(notice(false, "Sin categoría",
-                "Ninguna palabra calza con este producto."), lp(10))
+                "No lo reconozco todavía. Si aparece en tus pedidos junto a productos de la misma marca, " +
+                    "lo aprenderé solo; o puedes asignarlo ahora."), lp(10))
             testResult.addView(Ui.button(this, "Asignarle una categoría", false) { assign(p) }.small(),
                 LinearLayout.LayoutParams(wrap, wrap).apply { topMargin = px(8) })
         }
@@ -557,7 +594,7 @@ class MainActivity : Activity() {
             if (n.product) {
                 val i = classifier.classify(n.text)
                 val color = Ui.categoryColor(i)
-                row.addView(Ui.pill(this, if (i >= 0 && i < catList.cats.size) catList.cats[i].name else "Sin categoría",
+                row.addView(Ui.pill(this, categoryName(i),
                     color, Ui.alpha(color, 0x22)), LinearLayout.LayoutParams(wrap, wrap).apply { marginStart = px(8) })
             }
             box.addView(row)

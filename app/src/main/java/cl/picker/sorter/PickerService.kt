@@ -30,11 +30,13 @@ class PickerService : AccessibilityService() {
     lateinit var classifier: Classifier
         private set
 
+    private var stats = WordStats()
     private val items = LinkedHashMap<String, Boolean>()
     private val catCache = HashMap<String, Int>()
 
     override fun onServiceConnected() {
         instance = this
+        stats = Store.learned(this)
         overlay = Overlay(this)
         reload()
     }
@@ -45,7 +47,7 @@ class PickerService : AccessibilityService() {
         sig = Store.sig(this)
         autoLearn = Store.autoLearn(this)
         ignored = Store.ignored(this)
-        classifier = Classifier(Store.categories(this))
+        classifier = Store.classifier(this, stats)
         catCache.clear()
         items.keys.removeAll(ignored)
         val active = rootInActiveWindow?.packageName?.toString()
@@ -105,7 +107,14 @@ class PickerService : AccessibilityService() {
             if (n.product && !items.containsKey(t) && t !in ignored) {
                 items[t] = false
                 changed = true
+                val (cat, source) = classifier.classifyWithSource(t)
+                if (source == Classifier.EXACT) stats.learn(t, classifier.categories[cat].name)
             }
+        }
+        if (stats.dirty) {
+            Store.saveLearned(this, stats)
+            stats.dirty = false
+            catCache.clear()
         }
         if (changed) overlay?.refresh()
     }
@@ -184,6 +193,16 @@ class PickerService : AccessibilityService() {
     }
 
     fun pendingCount() = items.values.count { !it }
+
+    fun learnedCount() = stats.size
+
+    fun forgetLearned() {
+        stats.clear()
+        Store.saveLearned(this, stats)
+        stats.dirty = false
+        catCache.clear()
+        overlay?.refresh()
+    }
 
     override fun onInterrupt() {}
 

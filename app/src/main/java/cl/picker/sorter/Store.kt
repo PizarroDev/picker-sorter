@@ -29,6 +29,23 @@ object Store {
 
     fun clearIgnored(c: Context) = prefs(c).edit().remove("ignored").apply()
 
+    private var dict: String? = null
+
+    fun dictionary(c: Context): String =
+        dict ?: c.assets.open("diccionario.txt").bufferedReader().use { it.readText() }.also { dict = it }
+
+    private fun learnedFile(c: Context) = File(c.filesDir, "aprendido.tsv")
+
+    fun learned(c: Context): WordStats {
+        val f = learnedFile(c)
+        return if (f.exists()) WordStats.parse(f.readText()) else WordStats()
+    }
+
+    fun saveLearned(c: Context, s: WordStats) = learnedFile(c).writeText(s.serialize())
+
+    fun classifier(c: Context, learned: WordStats = learned(c)) =
+        Classifier(categories(c), dictionary(c), learned)
+
     private fun catFile(c: Context) = File(c.filesDir, "categorias.txt")
 
     fun categories(c: Context): String {

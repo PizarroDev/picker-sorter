@@ -1,0 +1,61 @@
+# Diccionario incorporado de Mini Picker.
+# Se suma a las palabras clave de cada categoría (se une por nombre de categoría).
+# Si una categoría de aquí no existe en tu lista, se agrega al final de la burbuja.
+
+[Frutas y verduras]
+manzana, platano, banana, naranja, mandarina, clementina, limon, lima, pomelo, pera, uva, kiwi, palta, frutilla, frambuesa, mora, arandano, cereza, guinda, ciruela, durazno, damasco, nectarin, mango, papaya, maracuya, chirimoya, lucuma, pina, melon, sandia, tuna, higo, caqui, granada, membrillo, coco, pepino dulce, fruta, frutas
+tomate, tomate cherry, lechuga, papa, camote, yuca, cebolla, cebollin, cebolla morada, ajo, zanahoria, pimenton, aji verde, zapallo, zapallo italiano, pepino, brocoli, coliflor, repollo, repollo morado, espinaca, acelga, kale, rucula, choclo, apio, cilantro, perejil, albahaca, ciboulette, menta, romero, jengibre, champinon, champinones, hongo, betarraga, rabanito, puerro, alcachofa, esparrago, poroto verde, habas, arveja, berenjena, brotes, ensalada, verdura, verduras, hortaliza
+
+[Panadería]
+pan, marraqueta, hallulla, dobladita, coliza, frica, pan amasado, pan de molde, pan molde, pan integral, pan pita, pita, tortilla, tortillas, rapiditas, baguette, ciabatta, croissant, medialuna, berlin, kuchen, queque, torta, pie de limon, brazo de reina, tostadas, pan rallado, bimbo, ideal, castano, fuchs
+
+[Carnes y pollo]
+carne, vacuno, cerdo, pollo, pechuga, trutro, alas, alitas, filete, lomo, lomo liso, lomo vetado, posta, posta negra, posta rosada, molida, carne molida, chuleta, costillar, costilla, pavo, asiento, abastero, punta paleta, punta picana, plateada, huachalomo, sobrecostilla, tapapecho, palanca, entrana, malaya, osobuco, churrasco, hamburguesa, pernil, cordero, prieta, chorizo, ariztia, super pollo, sopraval, agrosuper
+
+[Pescados y mariscos]
+pescado, salmon, merluza, reineta, congrio, corvina, tilapia, trucha, atun fresco, camaron, camarones, chorito, choritos, ostion, ostiones, calamar, pulpo, almeja, mariscos, surimi, kanikama, sushi
+
+[Fiambres y quesos]
+jamon, jamon de pavo, jamon pierna, salame, longaniza, vienesa, salchicha, mortadela, pate, arrollado, tocino, panceta, pechuga de pavo, lomito, pastrami, chicharron, queso, quesillo, queso fresco, queso crema, ricota, ricotta, mantecoso, gouda, chanco, parmesano, mozzarella, cheddar, brie, camembert, provoleta, philadelphia, tofu, hummus, san jorge, la preferida, llanquihue, receta del abuelo, pf, winter, cecinas
+
+[Lácteos y huevos]
+leche, leche entera, leche descremada, leche semidescremada, leche sin lactosa, leche chocolatada, leche cultivada, leche evaporada, leche condensada, leche en polvo, yogur*, yoghurt*, yogurt, griego, kefir, probiotico, batido, chamyto, ricolate, uno al dia, mantequilla, margarina, crema, crema de leche, manjar, postre, flan, leche asada, huevo, huevos, huevos de codorniz, colun, soprole, loncoleche, surlat, calo, danone, activia, svelty, nido, quillayes, yoplait, danette, alpura
+
+[Congelados]
+congelado, congelada, congelados, helado, helados, paleta helada, hielo, papas fritas congeladas, papas prefritas, papas duquesas, nugget, nuggets, apanado, apanados, empanada congelada, pizza congelada, lasana congelada, verduras congeladas, arvejas congeladas, choclo congelado, frutos rojos congelados, mccain, savory, bresler, trendy, minuto verde
+
+[Despensa]
+arroz, fideo, fideos, spaghetti, espagueti, tallarin, tallarines, pasta, lasana, ravioles, noquis, harina, harina de trigo, polvo de hornear, azucar, azucar flor, sal, sal de mar, aceite, aceite de oliva, vinagre, salsa, salsa de tomate, salsa de soya, pasta de tomate, ketchup, mayonesa, mostaza, aji, salsa picante, pebre, atun, jurel, sardina, sardinas, conserva, durazno en conserva, champinon en conserva, aceituna, aceitunas, poroto, porotos, lenteja, lentejas, garbanzo, garbanzos, quinoa, chia, linaza, mermelada, miel, levadura, caldo, consome, sopa, crema de verduras, pure, pure de papas, especia, oregano, pimienta, comino, merken, canela, curry, paprika, aliño, ajo en polvo, sucedaneo, gelatina, flan en polvo, colado de frutas, carozzi, lucchetti, tucapel, miraflores, banquete, belmont, natura, chef, hellmanns, jb, don juan, maggi, knorr, pomarola, malloa, wasil, aconcagua, san remo, van camps, iansa, lobos, robinson crusoe, costa brava
+
+[Café, té y desayuno]
+cafe, cafe en grano, cafe molido, nescafe, dolca, cappuccino, te, te verde, infusion, hierbas, mate, yerba mate, supremo, lipton, cereal, cereales, chocapic, zucaritas, corn flakes, fitness, granola, avena, quaker, muesli, cola cao, milo, nesquik, chocolate en polvo, endulzante, stevia, sucralosa, splenda, daily
+
+[Galletas y dulces]
+galleta, galletas, galleta de agua, oblea, chocolate, bombon, bombones, dulce, caramelo, calugas, chicle, gomita, gomitas, alfajor, barra cereal, barra de cereal, mentitas, chubi, mckay, costa, triton, frac, criollitas, kuky, morocha, sahne nuss, trencito, superocho, super 8, sustancia, privilegio, negrita, chocman, ferrero, kinder, milka, cadbury, toblerone, snickers, golpe, ambrosoli, arcor, nestle tableta, vizzio, rolls
+
+[Snacks]
+papas fritas, papas lays, papas kryzpo, lays, pringles, kryzpo, marco polo, evercrisp, doritos, cheetos, tika, ramitas, suflé, souffle, sufle, mani, almendra, almendras, nuez, nueces, pistacho, castana de caju, frutos secos, mix frutos secos, pasas, palomitas, cabritas, pop corn, nachos, snack, chips
+
+[Bebidas y jugos]
+bebida, bebidas, gaseosa, coca cola, coca-cola, coca zero, sprite, fanta, pepsi, seven up, 7up, bilz, pap, kem, crush, limon soda, ginger ale, canada dry, jugo, jugos, nectar, andina del valle, watts, livean, zuko, tang, agua, agua mineral, agua con gas, agua sin gas, cachantun, benedictino, vital, nestle pure life, isotonica, energetica, red bull, monster, score, powerade, gatorade, kombucha, te helado, lipton ice tea
+
+[Licores]
+cerveza, cervezas, vino, vino tinto, vino blanco, espumante, champana, pisco, ron, whisky, whiskey, vodka, gin, tequila, vermut, licor, sidra, aperol, fernet, ramazzotti, jagermeister, pisco sour, sour, cabernet, carmenere, merlot, sauvignon, chardonnay, malbec, cristal, escudo, kunstmann, austral, corona, heineken, becker, stella artois, royal guard, budweiser, mistral, capel, alto del carmen, control c, havana club, bacardi, absolut, concha y toro, santa rita, gato negro, casillero del diablo, clos
+
+[Limpieza]
+detergente, detergente liquido, jabon en polvo, jabon para ropa, cloro, lavaloza, lavavajilla, suavizante, limpiador, limpiavidrios, desengrasante, desinfectante, esponja, virutilla, pano, panos, guante, guantes, bolsa basura, bolsas de basura, escoba, trapero, cera, lustramuebles, quitamanchas, insecticida, toalla desinfectante, aromatizante, ambientador, omo, ace, drive, popeye, fuzol, quix, magistral, clorinda, cif, mr musculo, lysoform, poett, glade, raid, virginia, igenix, harpic, pato purific, vanish
+
+[Papel]
+papel higienico, confort, noble, elite, favorita, scott, nova, toalla de papel, toallas de papel, servilleta, servilletas, panuelo, panuelos, panuelos desechables
+
+[Cuidado personal]
+shampoo, champu, acondicionador, jabon, jabon liquido, gel de ducha, desodorante, pasta dental, crema dental, cepillo dental, cepillo de dientes, hilo dental, enjuague bucal, afeitar, maquina de afeitar, gel de afeitar, crema corporal, crema de manos, bloqueador, protector solar, toalla higienica, toallas higienicas, protector diario, tampon, algodon, cotonito, cotonitos, agua oxigenada, alcohol gel, curitas, head shoulders, pantene, sedal, dove, rexona, axe, nivea, colgate, pepsodent, oral b, listerine, gillette, bic, always, kotex, ladysoft, simonds, ballerina, lux, protex, palmolive, elvive, garnier, loreal, tresemme, eucerin
+
+[Bebés]
+panal, panales, toallitas humedas, colado, colados, compota, papilla, formula infantil, leche infantil, mamadera, chupete, aceite de bebe, babysec, huggies, pampers, nan, similac
+
+[Mascotas]
+perro, perros, gato, gatos, mascota, alimento perro, alimento para perro, alimento gato, alimento para gato, arena sanitaria, arena para gato, snack perro, master dog, master cat, dog chow, cat chow, pedigree, whiskas, champion dog, purina, felix, royal canin, cannes
+
+[Hogar y bazar]
+pila, pilas, bateria, ampolleta, ampolletas, vela, velas, fosforo, fosforos, encendedor, carbon, papel aluminio, alusa, film plastico, bolsa hermetica, ziploc, vaso desechable, vasos desechables, plato desechable, platos desechables, cubiertos desechables, bombilla, bombillas, cinta adhesiva, pegamento, cuaderno, lapiz, duracell, energizer
