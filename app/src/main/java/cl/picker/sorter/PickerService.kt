@@ -16,8 +16,6 @@ class PickerService : AccessibilityService() {
             private set
     }
 
-    class Node(val id: String?, val text: String, val product: Boolean)
-
     private val handler = Handler(Looper.getMainLooper())
     private val scanTask = Runnable { scanNow() }
     private var scanPending = false
@@ -26,6 +24,8 @@ class PickerService : AccessibilityService() {
     private var overlay: Overlay? = null
     private var target = ""
     private var viewId = ""
+    private var sig = ""
+    private var autoLearn = true
     private var ignored: MutableSet<String> = HashSet()
     lateinit var classifier: Classifier
         private set
@@ -42,6 +42,8 @@ class PickerService : AccessibilityService() {
     fun reload() {
         target = Store.target(this)
         viewId = Store.viewId(this)
+        sig = Store.sig(this)
+        autoLearn = Store.autoLearn(this)
         ignored = Store.ignored(this)
         classifier = Classifier(Store.categories(this))
         catCache.clear()
@@ -71,21 +73,31 @@ class PickerService : AccessibilityService() {
         if (pkg == packageName || target.isEmpty() || pkg != target) return
         if (!scanPending) {
             scanPending = true
-            handler.postDelayed(scanTask, 250)
+            handler.postDelayed(scanTask, 150)
         }
     }
 
     private fun scanNow() {
         scanPending = false
-        val root = try {
-            windows.mapNotNull { it.root }.firstOrNull { it.packageName == target }
+        val roots = try {
+            windows.mapNotNull { it.root }.filter { it.packageName == target }
         } catch (_: Exception) {
-            null
-        } ?: rootInActiveWindow?.takeIf { it.packageName == target } ?: return
+            emptyList()
+        }.ifEmpty { listOfNotNull(rootInActiveWindow?.takeIf { it.packageName == target }) }
+        if (roots.isEmpty()) return
 
-        val nodes = ArrayList<Node>()
-        walk(root, 0, nodes)
-        lastNodes = nodes
+        var nodes = ArrayList<Node>()
+        for (r in roots) walk(r, 0, nodes)
+
+        if (viewId.isEmpty() && sig.isEmpty() && autoLearn) {
+            val learned = Learner.best(nodes, classifier)
+            if (learned != null) {
+                sig = learned
+                Store.setSig(this, learned)
+                nodes = ArrayList(nodes.map { Node(it.id, it.sig, it.text, isProduct(it.text, it.id, it.sig)) })
+            }
+        }
+        lastNodes = if (nodes.size > 2000) nodes.subList(0, 2000) else nodes
 
         var changed = false
         for (n in nodes) {
@@ -99,26 +111,29 @@ class PickerService : AccessibilityService() {
     }
 
     private fun walk(n: AccessibilityNodeInfo?, depth: Int, out: MutableList<Node>) {
-        if (n == null || depth > 50) return
+        if (n == null || depth > 150 || out.size > 6000) return
         val raw = n.text ?: n.contentDescription
         if (raw != null) {
             val t = raw.toString().replace(spaces, " ").trim()
-            if (t.isNotEmpty() && out.size < 1500) {
+            if (t.isNotEmpty()) {
                 val id = n.viewIdResourceName
-                out.add(Node(id, t, isProduct(t, id)))
+                val s = Learner.signature(id, n.className, depth)
+                out.add(Node(id, s, t, isProduct(t, id, s)))
             }
         }
         for (i in 0 until n.childCount) walk(n.getChild(i), depth + 1, out)
     }
 
-    private fun isProduct(t: String, id: String?): Boolean {
+    private fun isProduct(t: String, id: String?, s: String): Boolean {
         if (viewId.isNotEmpty()) {
             return id != null && (id == viewId || id.endsWith(":id/$viewId"))
         }
-        if (t.length < 4 || t.length > 90 || t.contains('$')) return false
-        if (t.count { it.isLetter() } < 3) return false
+        if (!Learner.looksLikeText(t)) return false
+        if (sig.isNotEmpty() && s == sig) return true
         return categoryOf(t) >= 0
     }
+
+    fun preciseMode() = viewId.isNotEmpty() || sig.isNotEmpty()
 
     private fun categoryOf(name: String): Int = catCache.getOrPut(name) { classifier.classify(name) }
 

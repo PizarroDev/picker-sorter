@@ -12,6 +12,12 @@ object Store {
     fun viewId(c: Context): String = prefs(c).getString("viewId", "") ?: ""
     fun setViewId(c: Context, v: String) = prefs(c).edit().putString("viewId", v).apply()
 
+    fun sig(c: Context): String = prefs(c).getString("sig", "") ?: ""
+    fun setSig(c: Context, v: String) = prefs(c).edit().putString("sig", v).apply()
+
+    fun autoLearn(c: Context): Boolean = prefs(c).getBoolean("autoLearn", true)
+    fun setAutoLearn(c: Context, v: Boolean) = prefs(c).edit().putBoolean("autoLearn", v).apply()
+
     fun ignored(c: Context): MutableSet<String> =
         HashSet(prefs(c).getStringSet("ignored", emptySet()) ?: emptySet())
 

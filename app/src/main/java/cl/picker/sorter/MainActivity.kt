@@ -92,7 +92,7 @@ class MainActivity : Activity() {
             troubleBox = vbox().also { addView(it, lp(4)) }
         }
 
-        column.addView(text("Mini Picker 1.2 · Funciona sin internet y no envía datos a ningún lado", 12f, Ui.MUTED).apply {
+        column.addView(text("Mini Picker 1.3 · Funciona sin internet y no envía datos a ningún lado", 12f, Ui.MUTED).apply {
             gravity = Gravity.CENTER
             setPadding(px(24), px(24), px(24), 0)
         })
@@ -224,6 +224,8 @@ class MainActivity : Activity() {
 
     private fun chooseTarget(p: String) {
         Store.setTarget(this, p)
+        Store.setSig(this, "")
+        Store.setAutoLearn(this, true)
         PickerService.instance?.clearItems()
         PickerService.instance?.reload()
         refresh()
@@ -438,25 +440,39 @@ class MainActivity : Activity() {
 
     private fun renderTrouble() {
         troubleBox.removeAllViews()
-        val vid = Store.viewId(this)
+        val precise = Store.viewId(this).isNotEmpty() || Store.sig(this).isNotEmpty()
+        val auto = Store.autoLearn(this)
 
-        troubleBox.addView(text("Si en la burbuja aparecen textos que no son productos (botones, títulos), " +
-            "o faltan productos, Mini Picker puede aprender dónde están los nombres en tu app.",
-            14f, Ui.MUTED).spaced(), lp(4))
-
-        if (vid.isEmpty()) {
-            troubleBox.addView(text("1.  Abre un pedido en tu app de picking.\n2.  Vuelve aquí y toca:",
-                14f, Ui.TEXT).spaced(), lp(12))
-            troubleBox.addView(Ui.button(this, "Detectar productos automáticamente", true) { detect() }, lp(10))
-        } else {
+        if (precise) {
             troubleBox.addView(notice(true, "Lectura precisa activada",
-                "Mini Picker solo lee los nombres de producto, y los que no calzan aparecen en \"Sin categoría\"."), lp(12))
-            troubleBox.addView(Ui.button(this, "Desactivar lectura precisa", false) {
+                "Mini Picker aprendió dónde están los nombres de producto en tu app: captura todos los " +
+                    "productos, y los que no calzan con ninguna palabra aparecen en \"Sin categoría\"."), lp(4))
+            troubleBox.addView(text("Si ves textos raros o faltan productos, vuelve a aprender con un pedido abierto.",
+                14f, Ui.MUTED).spaced(), lp(12))
+            val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+            row.addView(Ui.button(this, "Volver a aprender", false) { relearn() }, weighted())
+            row.addView(Ui.button(this, "Desactivar", false) {
                 Store.setViewId(this, "")
+                Store.setSig(this, "")
+                Store.setAutoLearn(this, false)
                 detectMsg = null
                 PickerService.instance?.clearItems()
                 PickerService.instance?.reload()
                 refresh()
+            }, weighted().apply { marginStart = px(10) })
+            troubleBox.addView(row, lp(10))
+        } else if (auto) {
+            troubleBox.addView(notice(false, "Aprendiendo tu app…",
+                "Abre un pedido con varios productos a la vista. Cuando Mini Picker reconozca dónde están " +
+                    "los nombres, empezará a capturar todos los productos, incluso los que no tienen categoría."), lp(4))
+            troubleBox.addView(text("Si ya tienes un pedido abierto, puedes intentarlo ahora:", 14f, Ui.MUTED).spaced(), lp(12))
+            troubleBox.addView(Ui.button(this, "Detectar productos ahora", true) { detect() }, lp(10))
+        } else {
+            troubleBox.addView(text("La lectura precisa está desactivada: solo se capturan los productos que " +
+                "calzan con alguna palabra clave. Si faltan productos, actívala.", 14f, Ui.MUTED).spaced(), lp(4))
+            troubleBox.addView(Ui.button(this, "Activar lectura precisa", true) {
+                Store.setAutoLearn(this, true)
+                detect()
             }, lp(10))
         }
         detectMsg?.let { (ok, msg) ->
@@ -487,31 +503,31 @@ class MainActivity : Activity() {
         if (advancedOpen) troubleBox.addView(advancedView(), lp(8))
     }
 
+    private fun relearn() {
+        Store.setViewId(this, "")
+        Store.setSig(this, "")
+        Store.setAutoLearn(this, true)
+        detect()
+    }
+
     private fun detect() {
         val nodes = PickerService.lastNodes
-        val stats = HashMap<String, IntArray>()
-        for (n in nodes) {
-            val id = n.id?.substringAfter(":id/") ?: continue
-            val s = stats.getOrPut(id) { IntArray(2) }
-            s[0]++
-            if (classifier.classify(n.text) >= 0) s[1]++
-        }
-        val best = stats.entries
-            .filter { it.value[1] >= 2 && it.value[1] * 10 >= it.value[0] * 4 }
-            .maxByOrNull { it.value[1] }
+        val best = Learner.best(nodes, classifier)
         detectMsg = if (PickerService.instance == null) {
             false to "Primero activa el servicio (paso 1)."
         } else if (Store.target(this).isEmpty()) {
             false to "Primero elige tu app de picking (paso 2)."
         } else if (best == null) {
+            PickerService.instance?.reload()
             false to "En la última pantalla leída no vi suficientes productos. Abre un pedido con varios " +
-                "productos a la vista, vuelve aquí y toca el botón otra vez."
+                "productos a la vista, vuelve aquí y toca el botón otra vez. También se aprende solo mientras recorres el pedido."
         } else {
-            Store.setViewId(this, best.key)
+            Store.setSig(this, best)
             PickerService.instance?.clearItems()
             PickerService.instance?.reload()
-            true to "Encontré ${best.value[0]} nombres de producto en la última pantalla. " +
-                "Vuelve a tu pedido y recórrelo: ahora solo se leerán productos."
+            val count = nodes.count { it.sig == best && Learner.looksLikeText(it.text) }
+            true to "Encontré $count nombres de producto en la última pantalla. " +
+                "Vuelve a tu pedido, toca Limpiar en la burbuja y recórrelo de nuevo."
         }
         refresh()
     }

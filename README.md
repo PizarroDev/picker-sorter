@@ -12,7 +12,7 @@ En muchas apps de picking los productos de una misma categoría quedan repartido
 ## Cómo funciona
 
 1. Un **servicio de accesibilidad** lee los textos que muestra tu app de picking mientras recorres el pedido.
-2. Cada nombre de producto se clasifica según **palabras clave** (por ejemplo `leche, yogur, queso` → Lácteos).
+2. Mini Picker aprende dónde están los nombres de producto y clasifica cada uno según **palabras clave** (por ejemplo `leche, yogur, queso` → Lácteos).
 3. Una **burbuja flotante** muestra cuántos productos quedan. Al tocarla se abre la lista agrupada por categoría, con el progreso del pedido.
 
 En la burbuja:
@@ -49,7 +49,8 @@ Todo se cambia desde la app y se guarda solo:
 - **Categorías:** edítalas, crea nuevas y ordénalas con ↑ ↓ en el mismo orden de tu recorrido. Así aparecerán en la burbuja.
 - **Probar un producto:** escribe un nombre y te dice en qué categoría queda.
 - **Productos sin categoría:** los que no calzan con ninguna palabra se pueden asignar con un toque. La próxima vez se ordenan solos.
-- **¿La burbuja no se ve bien?** Con *Detectar productos automáticamente*, Mini Picker aprende dónde están los nombres de producto en tu app y deja de leer botones y títulos. Con *Ver qué está leyendo* ves todo lo que se leyó en la última pantalla.
+- **Lectura precisa (automática):** mientras recorres un pedido, Mini Picker aprende en qué parte de la pantalla están los nombres de producto. Desde ese momento captura todos los productos, incluso los que no calzan con ninguna palabra (quedan en "Sin categoría"), y deja de leer botones y títulos.
+- **¿La burbuja no se ve bien?** Desde ahí puedes volver a aprender o desactivar la lectura precisa, y con *Ver qué está leyendo* ves todo lo que se leyó en la última pantalla.
 
 ## Practicar sin pedidos reales
 
